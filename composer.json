@@ -1,0 +1,29 @@
+{
+  "name": "pantono/forms",
+  "description": "Forms Module for pantono",
+  "type": "library",
+  "require": {
+    "php": ">=8.4",
+    "pantono/core": "^1.0",
+    "pantono/contracts": "^1.0",
+    "pantono/utilities": "^1.0",
+    "pantono/database": "^1.0",
+    "robmorgan/phinx": "^0.16"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "10.3.4",
+    "phpstan/phpstan": "^1.10"
+  },
+  "license": "proprietary",
+  "autoload": {
+    "psr-4": {
+      "Pantono\\Forms\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Chris Burton",
+      "email": "chris@chris-burton.co.uk"
+    }
+  ]
+}
