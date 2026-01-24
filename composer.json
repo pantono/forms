@@ -5,10 +5,11 @@
   "require": {
     "php": ">=8.4",
     "pantono/core": "^1.0",
+    "pantono/hydrator": "^1.0",
     "pantono/contracts": "^1.0",
     "pantono/utilities": "^1.0",
     "pantono/database": "^1.0",
-    "robmorgan/phinx": "^0.16"
+    "pantono/phinx": "^0.16"
   },
   "require-dev": {
     "phpunit/phpunit": "10.3.4",
