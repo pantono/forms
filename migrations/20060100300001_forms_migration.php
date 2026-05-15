@@ -50,7 +50,7 @@ final class FormsMigration extends BasePantonoMigration
                 ['field_type_id' => 1, 'validator_id' => 1],
                 ['field_type_id' => 1, 'validator_id' => 2],
                 ['field_type_id' => 1, 'validator_id' => 3],
-            ]);
+            ])->saveData();
         }
 
         $this->table('form')
