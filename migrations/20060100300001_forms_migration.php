@@ -45,12 +45,13 @@ final class FormsMigration extends BasePantonoMigration
             ->addLinkedColumn('field_type_id', 'form_field_type', 'id')
             ->addLinkedColumn('validator_id', 'form_validator', 'id')
             ->create();
-
-        $this->insertOnCreate('form_field_type_validator', [
-            ['field_type_id' => 1, 'validator_id' => 1],
-            ['field_type_id' => 1, 'validator_id' => 2],
-            ['field_type_id' => 1, 'validator_id' => 3],
-        ]);
+        if ($this->isMigratingUp()) {
+            $this->table('form_field_type_validator')->insert([
+                ['field_type_id' => 1, 'validator_id' => 1],
+                ['field_type_id' => 1, 'validator_id' => 2],
+                ['field_type_id' => 1, 'validator_id' => 3],
+            ]);
+        }
 
         $this->table('form')
             ->addColumn('name', 'string')
