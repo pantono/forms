@@ -1,2 +1,4 @@
 Forms:
   class: Pantono\Forms\Forms
+FormActionRunner:
+  class: Pantono\Forms\Actions\ActionRunner
