@@ -10,6 +10,7 @@ class FormFieldType
 {
     private ?int $id = null;
     private string $name;
+    private string $label;
     /**
      * @var FormValidator[]
      */
@@ -34,6 +35,16 @@ class FormFieldType
     public function setName(string $name): void
     {
         $this->name = $name;
+    }
+
+    public function getLabel(): string
+    {
+        return $this->label;
+    }
+
+    public function setLabel(string $label): void
+    {
+        $this->label = $label;
     }
 
     /**
