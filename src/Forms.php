@@ -16,8 +16,6 @@ use Pantono\Forms\Validator\AbstractValidator;
 use Pantono\Contracts\Locator\LocatorInterface;
 use Pantono\Forms\Event\PreFormSubmissionSaveEvent;
 use Pantono\Forms\Event\PostFormSubmissionSaveEvent;
-use Pantono\Forms\Actions\AbstractActionController;
-use Pantono\Forms\Model\FormSubmissionAction;
 use Pantono\Forms\Actions\ActionRunner;
 
 class Forms
@@ -45,6 +43,21 @@ class Forms
     public function getFieldTypeById(int $id): ?FormFieldType
     {
         return $this->hydrator->lookupRecord(FormFieldType::class, $id);
+    }
+
+    /**
+     * @return FormFieldType[]
+     */
+    public function getFieldTypeList(): array
+    {
+        return $this->hydrator->hydrateSet(FormFieldType::class, $this->repository->getAllFieldTypes());
+    }
+    /**
+     * @return FormValidator[]
+     */
+    public function getValidatorList(): array
+    {
+        return $this->hydrator->hydrateSet(FormValidator::class, $this->repository->getAllValidators());
     }
 
     public function createSubmission(Form $form, array $data): FormSubmission
