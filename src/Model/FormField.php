@@ -28,9 +28,9 @@ class FormField implements SavableInterface
     #[Filter('json_decode')]
     private array $config = [];
     /**
-     * @var FormValidator[]
+     * @var FormFieldValidator[]
      */
-    #[OneToMany(targetModel: FormValidator::class, mappedBy: 'field_id')]
+    #[OneToMany(targetModel: FormFieldValidator::class, mappedBy: 'field_id')]
     private array $validators = [];
 
     public function getId(): ?int
@@ -107,7 +107,7 @@ class FormField implements SavableInterface
     }
 
     /**
-     * @return FormValidator[]
+     * @return FormFieldValidator[]
      */
     public function getValidators(): array
     {

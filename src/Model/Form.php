@@ -16,7 +16,7 @@ class Form implements SavableInterface
     private string $name;
     private string $introCopy;
     private ?string $successMessage = null;
-    private ?string $failureMessage = null;
+    private ?string $saveButtonText = null;
     /**
      * @var FormField[]
      */
@@ -68,14 +68,14 @@ class Form implements SavableInterface
         $this->successMessage = $successMessage;
     }
 
-    public function getFailureMessage(): ?string
+    public function getSaveButtonText(): ?string
     {
-        return $this->failureMessage;
+        return $this->saveButtonText;
     }
 
-    public function setFailureMessage(?string $failureMessage): void
+    public function setSaveButtonText(?string $saveButtonText): void
     {
-        $this->failureMessage = $failureMessage;
+        $this->saveButtonText = $saveButtonText;
     }
 
     /**

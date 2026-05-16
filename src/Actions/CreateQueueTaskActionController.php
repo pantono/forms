@@ -5,7 +5,7 @@ namespace Pantono\Forms\Actions;
 use Pantono\Queue\QueueManager;
 use Pantono\Forms\Model\FormSubmission;
 
-class CreateQueueTaskController extends AbstractActionController
+class CreateQueueTaskActionController extends AbstractActionController
 {
     private QueueManager $queueManager;
 

@@ -11,10 +11,14 @@ use Pantono\Contracts\Attributes\NoSave;
 use Pantono\Contracts\Attributes\Lazy;
 use Pantono\Contracts\Attributes\FieldName;
 use Pantono\Contracts\Attributes\DatabaseTable;
+use Pantono\Contracts\Application\Interfaces\SavableInterface;
+use Pantono\Database\Traits\SavableModel;
 
 #[DatabaseTable('form_validator')]
-class FormValidator
+class FormValidator implements SavableInterface
 {
+    use SavableModel;
+
     private ?int $id = null;
     private string $name;
     private string $controller;

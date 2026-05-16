@@ -18,6 +18,8 @@ use Pantono\Forms\Event\PreFormSubmissionSaveEvent;
 use Pantono\Forms\Event\PostFormSubmissionSaveEvent;
 use Pantono\Forms\Actions\ActionRunner;
 use Pantono\Forms\Filter\FormFilter;
+use Pantono\Forms\Event\PreFormSaveEvent;
+use Pantono\Forms\Event\PostFormSaveEvent;
 
 class Forms
 {
@@ -52,6 +54,20 @@ class Forms
     public function getFieldTypeList(): array
     {
         return $this->hydrator->hydrateSet(FormFieldType::class, $this->repository->getAllFieldTypes());
+    }
+
+    public function saveForm(Form $form): void
+    {
+        $previous = $form->getId() ? $this->hydrator->lookupRecord(Form::class, $form->getId()) : null;
+        $event = new PreFormSaveEvent();
+        $event->setCurrent($form);
+        $event->setPrevious($previous);
+
+        $this->repository->saveForm($form);
+
+        $event = new PostFormSaveEvent();
+        $event->setCurrent($form);
+        $event->setPrevious($previous);
     }
 
     /**

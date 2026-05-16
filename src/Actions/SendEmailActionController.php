@@ -6,7 +6,7 @@ use Pantono\Email\Email;
 use Pantono\Forms\Model\FormSubmission;
 use Pantono\Email\EmailTemplates;
 
-class EmailActionController extends AbstractActionController
+class SendEmailActionController extends AbstractActionController
 {
     private Email $email;
     private EmailTemplates $emailTemplates;

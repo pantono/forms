@@ -6,10 +6,14 @@ use Pantono\Contracts\Attributes\DatabaseTable;
 use Pantono\Contracts\Attributes\Database\OneToOne;
 use Pantono\Contracts\Attributes\FieldName;
 use Pantono\Contracts\Attributes\Filter;
+use Pantono\Contracts\Application\Interfaces\SavableInterface;
+use Pantono\Database\Traits\SavableModel;
 
 #[DatabaseTable('form_field_validator')]
-class FormFieldValidator
+class FormFieldValidator implements SavableInterface
 {
+    use SavableModel;
+
     private ?int $id = null;
     private int $fieldId;
     #[OneToOne(targetModel: FormValidator::class), FieldName('validator_id')]
