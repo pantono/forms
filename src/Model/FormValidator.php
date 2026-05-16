@@ -10,7 +10,9 @@ use Pantono\Forms\Forms;
 use Pantono\Contracts\Attributes\NoSave;
 use Pantono\Contracts\Attributes\Lazy;
 use Pantono\Contracts\Attributes\FieldName;
+use Pantono\Contracts\Attributes\DatabaseTable;
 
+#[DatabaseTable('form_validator')]
 class FormValidator
 {
     private ?int $id = null;
