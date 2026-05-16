@@ -17,6 +17,7 @@ use Pantono\Contracts\Locator\LocatorInterface;
 use Pantono\Forms\Event\PreFormSubmissionSaveEvent;
 use Pantono\Forms\Event\PostFormSubmissionSaveEvent;
 use Pantono\Forms\Actions\ActionRunner;
+use Pantono\Forms\Filter\FormFilter;
 
 class Forms
 {
@@ -52,6 +53,7 @@ class Forms
     {
         return $this->hydrator->hydrateSet(FormFieldType::class, $this->repository->getAllFieldTypes());
     }
+
     /**
      * @return FormValidator[]
      */
@@ -113,5 +115,14 @@ class Forms
                 $this->actionRunner->runAction($action, $submission);
             }
         }
+    }
+
+    /**
+     * @param FormFilter $filter
+     * @return Form[]
+     */
+    public function getFormsByFilter(FormFilter $filter): array
+    {
+        return $this->hydrator->hydrateSet(Form::class, $this->repository->getByFilter($filter));
     }
 }
