@@ -46,15 +46,23 @@ class FormsRepository extends DefaultRepository
         if ($id) {
             $form->setId($id);
         }
+        $formId = $form->getId();
 
+        $doneFieldIds = [];
         foreach ($form->getFields() as $field) {
-            $field->setFormId($form->getId());
+            $field->setFormId($formId);
             $fieldId = $this->insertOrUpdate($this->appendTablePrefix('form_field'), 'id', $field->getId(), $field->getAllData());
             if ($fieldId) {
                 $field->setId($fieldId);
             }
+            $fieldId = $field->getId();
+            if ($fieldId === null) {
+                throw new \RuntimeException('Unable to save form field without an id');
+            }
+            $doneFieldIds[] = $fieldId;
             $doneIds = [];
             foreach ($field->getValidators() as $validator) {
+                $validator->setFieldId($fieldId);
                 $validatorId = $this->insertOrUpdate($this->appendTablePrefix('form_field_validator'), 'id', $validator->getId(), $validator->getAllData());
                 if ($validatorId) {
                     $validator->setId($validatorId);
@@ -64,18 +72,47 @@ class FormsRepository extends DefaultRepository
             $qb = $this->getDb()->createQueryBuilder()->delete($this->appendTablePrefix('form_field_validator'))
                 ->whereParam('field_id = ?', $fieldId);
             if (!empty($doneIds)) {
-                $qb->where('id not in (:ids)')
+                $qb->andWhere('id not in (:ids)')
                     ->setParameter('ids', $doneIds, ArrayParameterType::INTEGER);
             }
             $qb->executeQuery();
         }
+        $fieldTable = $this->appendTablePrefix('form_field');
+        $validatorTable = $this->appendTablePrefix('form_field_validator');
+        $staleFieldCondition = sprintf(
+            'field_id in (select id from %s where form_id = :form_id)',
+            $fieldTable
+        );
+        $fieldQb = $this->getDb()->createQueryBuilder()->delete($fieldTable)
+            ->whereParam('form_id = ?', $formId);
+        $validatorQb = $this->getDb()->createQueryBuilder()->delete($validatorTable)
+            ->where($staleFieldCondition)
+            ->setParameter('form_id', $formId);
+        if (!empty($doneFieldIds)) {
+            $fieldQb->andWhere('id not in (:ids)')
+                ->setParameter('ids', $doneFieldIds, ArrayParameterType::INTEGER);
+            $validatorQb->andWhere('field_id not in (:ids)')
+                ->setParameter('ids', $doneFieldIds, ArrayParameterType::INTEGER);
+        }
+        $validatorQb->executeQuery();
+        $fieldQb->executeQuery();
 
+        $doneActionIds = [];
         foreach ($form->getActions() as $action) {
-            $action->setFormId($form->getId());
+            $action->setFormId($formId);
             $actionId = $this->insertOrUpdate($this->appendTablePrefix('form_action'), 'id', $action->getId(), $action->getAllData());
             if ($actionId) {
                 $action->setId($actionId);
             }
+            $doneActionIds[] = $action->getId();
         }
+        $actionQb = $this->getDb()->createQueryBuilder()->delete($this->appendTablePrefix('form_action'))
+            ->andWhere('form_id = :form_id')
+            ->setParameter('form_id', $formId);
+        if (!empty($doneActionIds)) {
+            $actionQb->andWhere('id not in (:ids)')
+                ->setParameter('ids', $doneActionIds, ArrayParameterType::INTEGER);
+        }
+        $actionQb->executeQuery();
     }
 }
