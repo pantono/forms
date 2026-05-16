@@ -103,4 +103,22 @@ class Form implements SavableInterface
     {
         $this->actions = $actions;
     }
+
+    public function addField(FormField $field): void
+    {
+        //Run this way because of the way lazy loading works
+        $fields = $this->getFields();
+        $fields[] = $field;
+        $this->fields = $fields;
+    }
+
+    public function getFieldById(int $id): ?FormField
+    {
+        foreach ($this->getFields() as $field) {
+            if ($field->getId() === $id) {
+                return $field;
+            }
+        }
+        return null;
+    }
 }
